@@ -1,4 +1,4 @@
-from utils import get_products_data, argument_parser, scrap_data
+from src.utils import get_products_data, argument_parser, scrap_data
 
 # import logging
 

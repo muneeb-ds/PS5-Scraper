@@ -2,7 +2,7 @@ import pandas as pd
 from argparse import ArgumentParser
 from selenium.webdriver.common.by import By
 
-from scrap import WebScrap
+from src.scrap import WebScrap
 
 def get_products_data(product_dict):
     scrapped_info_df = pd.DataFrame(product_dict)
