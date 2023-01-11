@@ -4,6 +4,7 @@ from selenium.webdriver.common.by import By
 
 from src.scrap import WebScrap
 
+
 def get_products_data(product_dict):
     scrapped_info_df = pd.DataFrame(product_dict)
     scrapped_info_df = scrapped_info_df.reset_index()
@@ -30,15 +31,13 @@ def get_products_data(product_dict):
 
     return product_info_df
 
+
 def argument_parser():
     parser = ArgumentParser(description="input parameters")
 
-    parser.add_argument("--email",
-                        help='email on which scrapped data is received')
+    parser.add_argument("--email", help="email on which scrapped data is received")
 
-    parser.add_argument("--postal_code",
-                        help = "postal code to check nearby stores")
+    parser.add_argument("--postal_code", help="postal code to check nearby stores")
 
     args = parser.parse_args()
     return args
-

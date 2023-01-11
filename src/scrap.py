@@ -16,33 +16,29 @@ class WebScrap:
         chrome_options.add_argument("start-maximized")
         chrome_options.add_argument("--headless")
         chrome_options.add_argument("--window-size=1920,1080")
-        chrome_options.add_argument('--ignore-certificate-errors')
-        chrome_options.add_argument('--allow-running-insecure-content')
-        user_agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.50 Safari/537.36'
-        chrome_options.add_argument(f'user-agent={user_agent}')
-        driver_path = ChromeDriverManager().install()
-        self.driver = webdriver.Chrome(
-            service=Service(driver_path), options=chrome_options
+        chrome_options.add_argument("--ignore-certificate-errors")
+        chrome_options.add_argument("--allow-running-insecure-content")
+        user_agent = (
+            "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.50 Safari/537.36"
         )
+        chrome_options.add_argument(f"user-agent={user_agent}")
+        driver_path = ChromeDriverManager().install()
+        self.driver = webdriver.Chrome(service=Service(driver_path), options=chrome_options)
 
         self.product_info = {}
-        
+
         self.driver.get(web_url)
-
-
 
     def wait_until_element_exist(self, locator, loc_text):
         try:
-            WebDriverWait(self.driver, 50).until(
-                EC.presence_of_element_located((locator, loc_text))
-            )
+            WebDriverWait(self.driver, 50).until(EC.presence_of_element_located((locator, loc_text)))
         except TimeoutError:
             return False
         return True
 
     def check_exists(self, locator, loc_text):
         try:
-            return self.get_element(locator, loc_text, method = 'first')
+            return self.get_element(locator, loc_text, method="first")
         except NoSuchElementException:
             return False
 
@@ -55,7 +51,7 @@ class WebScrap:
     def home_page(self):
         self.wait_until_element_exist(By.CLASS_NAME, "productList_31W-E")
 
-        product_container = self.get_element(By.CLASS_NAME, "productList_31W-E", method = "first")
+        product_container = self.get_element(By.CLASS_NAME, "productList_31W-E", method="first")
         links = product_container.find_elements(By.CLASS_NAME, "link_3hcyN")
         links = [link.get_attribute("href") for link in links]
 
@@ -65,7 +61,7 @@ class WebScrap:
         self.driver.get(link)
 
         self.wait_until_element_exist(By.CLASS_NAME, "productName_2KoPa")
-        product_name = self.get_element(By.CLASS_NAME, "productName_2KoPa", method = "first").text
+        product_name = self.get_element(By.CLASS_NAME, "productName_2KoPa", method="first").text
         button1 = self.check_exists(By.LINK_TEXT, "Check other stores")
         if not button1:
             return False
@@ -73,32 +69,27 @@ class WebScrap:
         button1.click()
 
         self.product_info[product_name] = {}
-        self.product_info[product_name]['link']  = link
+        self.product_info[product_name]["link"] = link
 
         return product_name
 
     def input_postal_code(self, post_code="R2M"):
         self.wait_until_element_exist(By.ID, "postalCode")
 
-        postal_code = self.get_element(By.ID, "postalCode", method = 'first')
+        postal_code = self.get_element(By.ID, "postalCode", method="first")
         postal_code.send_keys(post_code)
         button_xpath = "//*[@id='root']/div/div[3]/div/div/div/div[3]/div[2]/div/div/button[1]"
-        self.wait_until_element_exist(By.XPATH,button_xpath)
-        self.get_element(
-            By.XPATH,
-            button_xpath
-        ).click()
+        self.wait_until_element_exist(By.XPATH, button_xpath)
+        self.get_element(By.XPATH, button_xpath).click()
 
     def get_store_lists(self):
         self.wait_until_element_exist(By.CLASS_NAME, "storeListItem_3piwR")
 
-        button_see_more = (
-            "//*[@id='root']/div/div[3]/div/div/div/div[4]/div/div[2]/div/button"
-        )
+        button_see_more = "//*[@id='root']/div/div[3]/div/div/div/div[4]/div/div[2]/div/button"
         while self.check_exists(By.XPATH, button_see_more):
             self.get_element(By.XPATH, button_see_more).click()
 
-        store_lists = self.get_element(By.CLASS_NAME, "storeListItem_3piwR", method = 'all')
+        store_lists = self.get_element(By.CLASS_NAME, "storeListItem_3piwR", method="all")
 
         return store_lists
 
@@ -106,11 +97,9 @@ class WebScrap:
         self.wait_until_element_exist(By.CLASS_NAME, "availabilityMessage_1waQP")
         store_name = store.find_element(By.CLASS_NAME, "name_1zPVg").text
         self.driver.get_screenshot_as_file("screenshot.png")
-        status = store.find_element(
-            By.CLASS_NAME, "availabilityMessage_1waQP"
-        ).text
+        status = store.find_element(By.CLASS_NAME, "availabilityMessage_1waQP").text
 
-        return store_name,status
+        return store_name, status
 
     def run(self):
         links = self.home_page()
@@ -121,10 +110,10 @@ class WebScrap:
                 continue
 
             self.input_postal_code()
-            self.product_info[product_]['price'] = self.driver.find_element(
+            self.product_info[product_]["price"] = self.driver.find_element(
                 By.XPATH,
                 "//*[@id='root']/div/div[3]/div/div/div/div[2]/a/div/div/div[2]/div[3]/span/div/div",
-                ).text
+            ).text
             stores = self.get_store_lists()
 
             for store in stores:
