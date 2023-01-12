@@ -5,7 +5,9 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
+from selenium.common.exceptions import StaleElementReferenceException
 from selenium.common.exceptions import NoSuchElementException
+import time
 
 
 class WebScrap:
@@ -30,11 +32,10 @@ class WebScrap:
         self.driver.get(web_url)
 
     def wait_until_element_exist(self, locator, loc_text):
-        try:
-            WebDriverWait(self.driver, 50).until(EC.presence_of_element_located((locator, loc_text)))
-        except TimeoutError:
-            return False
-        return True
+        WebDriverWait(self.driver, 50, ignored_exceptions=StaleElementReferenceException).until(EC.presence_of_element_located((locator, loc_text)))
+        # except TimeoutError:
+            # return False
+        # return True
 
     def check_exists(self, locator, loc_text):
         try:
@@ -74,13 +75,15 @@ class WebScrap:
         return product_name
 
     def input_postal_code(self, post_code="R2M"):
-        self.wait_until_element_exist(By.ID, "postalCode")
+        self.wait_until_element_exist(By.CLASS_NAME, "formItem_QE5m9")
 
-        postal_code = self.get_element(By.ID, "postalCode", method="first")
-        postal_code.send_keys(post_code)
+        form = self.get_element(By.CLASS_NAME, "formItem_QE5m9", method="first")
+        postal_code = form.find_element(By.ID, "postalCode")
         button_xpath = "//*[@id='root']/div/div[3]/div/div/div/div[3]/div[2]/div/div/button[1]"
         self.wait_until_element_exist(By.XPATH, button_xpath)
+        postal_code.send_keys(post_code)
         self.get_element(By.XPATH, button_xpath).click()
+        # time.sleep(5)
 
     def get_store_lists(self):
         self.wait_until_element_exist(By.CLASS_NAME, "storeListItem_3piwR")
@@ -94,9 +97,10 @@ class WebScrap:
         return store_lists
 
     def availability(self, store):
-        self.wait_until_element_exist(By.CLASS_NAME, "availabilityMessage_1waQP")
+        self.wait_until_element_exist(By.CLASS_NAME, "name_1zPVg")
         store_name = store.find_element(By.CLASS_NAME, "name_1zPVg").text
         self.driver.get_screenshot_as_file("screenshot.png")
+        self.wait_until_element_exist(By.CLASS_NAME, "availabilityMessage_1waQP")
         status = store.find_element(By.CLASS_NAME, "availabilityMessage_1waQP").text
 
         return store_name, status
