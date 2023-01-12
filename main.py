@@ -9,7 +9,7 @@ def main():
 
     walmart_site = "https://www.bestbuy.ca/en-ca/category/ps5-consoles/17583383"
     args = argument_parser()
-    products_dict = WebScrap(walmart_site).run()
+    products_dict = WebScrap(walmart_site, args.postal_code).run()
     Products(products_dict).email_stock_info(args.email, args.password)
 
 

@@ -32,8 +32,7 @@ class Products:
         self.products_df.to_csv("scrapped_data.csv", index=False)
 
     def get_available_prods(self):
-        # if "Out of Stock" not in self.products_df['status']:
-        available_prods = self.products_df[self.products_df['status'] != "Out of Stock"]
+        available_prods = self.products_df[self.products_df['status'] == "In Stock"]
         if available_prods.empty:
             return pd.DataFrame()
         return available_prods
