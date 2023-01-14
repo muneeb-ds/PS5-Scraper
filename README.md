@@ -3,7 +3,7 @@ Best Buy website scrapper to scrap website for PS5 stocks at nearby locations an
 
 ### To run and get updated on your email follow these instructions
 
-#### Clone repo and move to its director
+#### Clone repo and move to its directory
 ```
 git clone [http/ssh repo url]
 cd [repo/location/]
