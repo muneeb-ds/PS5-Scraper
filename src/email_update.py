@@ -13,7 +13,7 @@ class EmailUpdate:
     def mail_msg(self):
         msg = EmailMessage()
         msg['Subject'] = "PS5 in STOCK!"
-        msg['From'] = self.email
+        msg['From'] = "syedmuneeb54@gmail.com"
         msg['To'] = self.email
 
         msg.set_content("You scrapped stock info for BestBuy Canada")

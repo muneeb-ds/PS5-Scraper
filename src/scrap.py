@@ -1,3 +1,4 @@
+import time
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -8,7 +9,6 @@ from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.common.exceptions import StaleElementReferenceException
 from selenium.common.exceptions import NoSuchElementException
-import time
 
 
 class WebScrap:
@@ -89,6 +89,7 @@ class WebScrap:
         postal_code.click()
         postal_code.send_keys(self.postal_code)
         self.get_element(By.XPATH, button_xpath).click()
+        time.sleep(5)
 
     def get_store_page_html(self):
         self.wait_until_element_exist(By.CLASS_NAME, "storeListItem_3piwR")
@@ -108,7 +109,7 @@ class WebScrap:
     def availability(self, store):
         # self.wait_until_element_exist(By.CLASS_NAME, "name_1zPVg")
         store_name = store.find("a", class_ = "name_1zPVg").text
-        # self.driver.get_screenshot_as_file("screenshot.png")
+        self.driver.get_screenshot_as_file("screenshot.png")
         # self.wait_until_element_exist(By.CLASS_NAME, "availabilityMessage_1waQP")
         status = store.find("p", "availabilityMessage_1waQP").text
 
