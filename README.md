@@ -1,4 +1,4 @@
-# BestBuy PS5 Scrapper
+# BestBuy PS5 Scraper
 Best Buy website scrapper to scrap website for PS5 stocks at nearby locations and notify if stock becomes available
 
 ### To run and get updated on your email follow these instructions
@@ -26,7 +26,7 @@ pip install -r requirements.txt
 python main.py --postal_code [your-postal-code]
 ```
 
-### To schedule scrapping to **run at a frequency** you can use [cron](https://code.tutsplus.com/tutorials/scheduling-tasks-with-cron-jobs--net-8800)
+### To schedule scraping to *run at a frequency* you can use [cron](https://code.tutsplus.com/tutorials/scheduling-tasks-with-cron-jobs--net-8800)
 
 
 
