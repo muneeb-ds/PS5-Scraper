@@ -1,6 +1,11 @@
 # BestBuy PS5 Scraper
 
+
+
 Best Buy Canada website scraper to scrape website for PS5 stocks at nearby locations (based on the postal code provided) and notify in email when stock becomes available so you could quickly get your hands on them.
+
+## PREVIEW
+![Screenshot 2024-03-22 at 8 14 31 PM](https://github.com/muneeb-ds/PS5-Scraper/assets/101942585/9b9fc210-ccab-4801-9384-3568c55e6d38)
 
 ### To run and get updated on your email follow these instructions
 
